@@ -35,6 +35,9 @@ std::string Utils::getSortType(int sortType) {
 	case 7:
 		return "Odd-Even sort";
 
+	case 8:
+		return "Merge sort";
+
 	default:
 		return kNoSort;
 	}
