@@ -390,7 +390,7 @@ int merge(std::vector<Sortable>& sortElements, int left, int middle, int right, 
 	}
 
 	for(int j = 0; j < rightSize; j++){
-		rightArray[i] = sortElements[middle + 1 + j];
+		rightArray[j] = sortElements[middle + 1 + j];
 	}
 
 	int i = 0;
