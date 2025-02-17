@@ -124,6 +124,8 @@ void SortController::_startSort(int sortType) {
 		case 7:
 			numOfComparisons += algo::oddEvenSort(_sortElements, _timeSleep, _interrupt);
 			break;
+		case 8:
+			numOfComparisons += algo::mergeSort(_sortElements, _timeSleep, _interrupt);
 		default:
 			return;
 		}
