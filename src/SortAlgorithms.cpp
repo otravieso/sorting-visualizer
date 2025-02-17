@@ -367,6 +367,92 @@ int algo::oddEvenSort(std::vector<Sortable>& sortElements, int timeSleep, const 
 	return numOfComparisons; 
 }
 
+
+/**
+ *@brief Merge Sort
+ *@author otravieso
+ *@param sortElements: Main array that contains all the elements to be sorted
+ *@param timeSleep: Time to wait between iterations in miliseconds
+ *@param interrupt: Bool to stop the sort process
+ *@return Number of comparisons made
+ */
+int merge(std::vector<Sortable>& sortElements, int left, int middle, int right, int timeSleep, const std::atomic<bool>& interrupt){
+	int numOfComparisons = 0;
+	
+	int rightSize = right - middle;
+	int leftSize = middle - left + 1;
+
+	std::vector<Sortable> rightArray(rightSize);
+	std::vector<Sortable> leftArray(leftSize);
+
+	for(int i = 0; i < leftSize; i++){
+		leftArray[i] = sortElements[left + i];
+	}
+
+	for(int j = 0; j < rightSize; j++){
+		rightArray[i] = sortElements[middle + 1 + j];
+	}
+
+	int i = 0;
+	int j = 0;
+	int k = left;
+
+	while(i < leftSize && j < rightSize){  //Performs the actual swapping of elements between the left and right arrays when necessary
+		if (interrupt){
+			return numOfComparisons;
+		}
+		if (leftArray[i].value <= rightArray[j].value){
+			sortElements[k] = leftArray[i];
+			i++;
+		}
+		else{
+			sortElements[k] = rightArray[j];
+			j++;
+		}
+		algoUtils::swap(sortElements, timeSleep, sortElements[k], sortElements[k]); //Visual indicator of swap
+		k++;
+		numOfComparisons++;
+	}
+
+	while(i < leftSize){ //Adds elements of leftArray to main array
+		if (interrupt){
+			return numOfComparisons;
+		}
+		sortElements[k] = leftArray[i];
+		algoUtils::swap(sortElements, timeSleep, sortElements[k], sortElements[k]);
+		i++;
+		k++;
+		numOfComparisons++;
+	}
+
+	while(j < rightSize){ //Adds elements of rightArray to main array
+		if (interrupt){
+			return numOfComparisons;
+		}
+		sortElements[k] = rightArray[j];
+		algoUtils::swap(sortElements, timeSleep, sortElements[k], sortElements[k]);
+		j++;
+		k++;
+		numOfComparisons++;
+	}
+	return numOfComparisons;
+}
+int mergeSortHelper(std::vector<Sortable>& sortElements, int left, int right, int timeSleep, const std::atomic<bool>& interrupt){
+	int numOfComparisons = 0;
+
+	if(left < right){
+		int middle = left + ((right - left)/2);
+		numOfComparisons += mergeSortHelper(sortElements, left, middle, timeSleep, interrupt);
+		numOfComparisons += mergeSortHelper(sortElements, middle + 1, right, timeSleep, interrupt);
+		numOfComparisons += merge(sortElements, left, middle, right, timeSleep, interrupt);
+	}
+	return numOfComparisons;
+	
+}
+int algo::mergeSort(std::vector<Sortable>& sortElements, int timeSleep, const std::atomic<bool>& interrupt){
+	return mergeSortHelper(sortElements, 0, (sortElements.size() - 1), timeSleep, interrupt);
+}
+
 //
 // ────────────────────────────────────────────────────────── II ──────────
 //   :::::: U T I L I T I E S : :  :   :    :     :        :          :
