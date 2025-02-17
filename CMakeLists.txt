@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-set(SFML_DIR "C:/Program Files (x86)/SFML/lib/cmake/SFML")
+set(SFML_DIR "C:/SFML/lib/cmake/SFML")
 
 find_package(SFML COMPONENTS graphics window CONFIG REQUIRED)
 
